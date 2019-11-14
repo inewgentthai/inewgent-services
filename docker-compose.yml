@@ -1,0 +1,25 @@
+version: '3'
+services:
+  
+  docker_proxy:
+    image: nginx
+    container_name: docker_proxy
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+    ports:
+      - "80:80"
+    networks:
+      network-inewgent:
+
+  mongodb:
+    image: mongo:4
+    container_name: mongodb
+    command: mongod
+    ports:
+      - '27017:27017'
+    networks:
+      network-inewgent:
+
+networks:
+  network-inewgent:
+    external: true
