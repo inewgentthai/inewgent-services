@@ -17,6 +17,9 @@ services:
     command: mongod
     ports:
       - '27017:27017'
+    volumes:
+      - ./db:/data/db
+    restart: always
     networks:
       network-inewgent:
 
