@@ -1,16 +1,6 @@
 version: '3'
 services:
   
-  docker_proxy:
-    image: nginx
-    container_name: docker_proxy
-    volumes:
-      - ./nginx/conf.d:/etc/nginx/conf.d
-    ports:
-      - "80:80"
-    networks:
-      network-inewgent:
-
   mongodb:
     image: mongo:4
     container_name: mongodb
@@ -20,6 +10,37 @@ services:
     volumes:
       - ./db:/data/db
     restart: always
+    networks:
+      network-inewgent:
+
+  mysql:
+    container_name: mysql
+    image: mysql
+    restart: always
+    command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - 33306:3306
+    environment:
+      MYSQL_DATABASE: inewgent
+      MYSQL_USER: inewgent
+      MYSQL_PASSWORD: s72272571
+      MYSQL_ROOT_PASSWORD: s72272571
+    volumes:
+      - ./mysql_db:/var/lib/mysql
+    networks:
+      network-inewgent:
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:5
+    container_name: phpmyadmin
+    depends_on:
+      - mysql
+    restart: always
+    ports:
+      - 30080:80
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
     networks:
       network-inewgent:
 
